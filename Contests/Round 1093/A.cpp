@@ -14,52 +14,28 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    ll t = 1;
-    // cin >> t;
+    ll t;
+    cin >> t;
 
     while (t--) {
         ll n;
         cin >> n;
-        vector<vector<ll>>adj(n,vector<ll>());
-        for(int i = 0 ; i < n-1 ; i++){
-            ll u , v;
-            cin >> u >> v;
-            u--,v--;
-            adj[u].push_back(v);
-            adj[v].push_back(u);
-        }
-
-        vector<int> subtree(n + 1);
-        vector<bool>vis(n,false);
-        ll ans = 0;
-
-        auto dfs = [&](auto &&self, int node, int parent) -> void{
-            subtree[node] = 1; 
-            vis[node] = true;
-
-            for (auto &child : adj[node]){
-                if (child == parent) continue;
-                self(self, child, node);
-                subtree[node] += subtree[child];
-                if(subtree[child] % 2 == 0) ans++;
-            }
-        };
-        bool ns = false;
-
-        for(int i = 0 ; i < n ; i++) {
-            if(!vis[i]) {
-                dfs(dfs,i,-1);
-                if(subtree[i] % 2)  ns = true;
+        vector<ll> vec(n);
+        for (int i = 0; i < n; i++) cin >> vec[i];
+        sort(vec.begin(),vec.end());
+        reverse(vec.begin(),vec.end());
+        bool nn = false;
+        for(int i = 0 ; i < n-1 ; i++) {
+            if(vec[i] == vec[i+1]) {
+                nn = true;
+                break;
             }
         }
-        for(int i = 0 ; i < n ; i++) vis[i] = false;
-        // ll ans = 0;
-        // for(int i = 0 ; i < n ; i++) {
-
-        // }
-        // for(int i = 0 ; i < n ; i++) cout << subtree[i] << ' ';
-        if(ns) ans = -1;
-        cout << ans << '\n';
+        if(nn) cout << -1 << '\n';
+        else {
+            for(int i = 0 ; i < n ; i++) cout << vec[i] << ' ';
+            cout << '\n';
+        }
     }
     return 0;
 }
